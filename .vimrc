@@ -59,7 +59,6 @@ call vundle#begin()
 "--------------------------------------------"
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/nerdtree'
-"Plugin 'kien/ctrlp.vim' "Removed in favor of unite.vim
 Plugin 'tomtom/tcomment_vim'
 Plugin 'vim-scripts/CycleColor'
 Plugin 'majutsushi/tagbar'
@@ -67,23 +66,27 @@ Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/Colour-Sampler-Pack'
 Plugin 'mattn/emmet-vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Shougo/unite.vim'
 Plugin 'mileszs/ack.vim'
-Plugin 'nathanaelkane/vim-indent-guides'
 "--------------------------------------------"
 " Plugin configurations
 "--------------------------------------------"
-let g:indent_guides_guide_size = 4
-let g:indent_guides_start_level = 1
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_space_guides = 1
-let g:indent_guides_soft_pattern = ' '
+"
 "--------------------------------------------"
 call vundle#end()
 filetype plugin indent on
 "--------------------------------------------"
-color delek
-set number
+
+
+"--------------------------------------------"
+" Colorscheme stuff
+"--------------------------------------------"
+" Favorite color shemes 
+"--------------------------------------------"
+" xoria256,Mustang
+"--------------------------------------------"
+set t_Co=256
+colorscheme xoria256
+"--------------------------------------------"
 
 "Set leader to space
 let mapleader=" "
@@ -92,9 +95,40 @@ let mapleader=" "
 map <leader>o :NERDTreeToggle<CR>
 map <leader>t :TagbarToggle<CR>
 map <leader>y :YRShow<CR>
+map <leader>r :call ToggleNumber()<CR>
 
-"Set mappings for unite stuff
-nnoremap <space>/ :Unite grep:.<cr>
-nnoremap <C-p> :Unite file_rec/async<cr>
-nnoremap <space>s :Unite -quick-match buffer<cr>
+"Make 'D' behave like 'Y'
+nnoremap D d$
+
+"Make H and L go to the begining and end of the line
+noremap H ^
+noremap L $
+vnoremap L g_
+
+"Avoid the <esc> key
+imap jj <Esc>
+
+"Status line
+set laststatus=2
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+
+"Tab configuration
+set expandtab       
+set softtabstop=4
+
+"Misc configurations
+set cursorline
+set wildmenu
+set showmatch
+set hlsearch
+
+" Toggle relative numbers: http://dougblack.io/words/a-good-vimrc.html#colors
+function! ToggleNumber()
+    if(&relativenumber == 1)
+        set norelativenumber
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
 
