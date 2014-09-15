@@ -67,6 +67,10 @@ Plugin 'vim-scripts/Colour-Sampler-Pack'
 Plugin 'mattn/emmet-vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'mileszs/ack.vim'
+Plugin 'jaxbot/browserlink.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-fugitive'
+Plugin 'oplatek/Conque-Shell'
 "--------------------------------------------"
 " Plugin configurations
 "--------------------------------------------"
@@ -96,6 +100,7 @@ map <leader>o :NERDTreeToggle<CR>
 map <leader>t :TagbarToggle<CR>
 map <leader>y :YRShow<CR>
 map <leader>r :call ToggleNumber()<CR>
+map <leader>s :update<CR>
 
 "Make 'D' behave like 'Y'
 nnoremap D d$
@@ -113,6 +118,7 @@ set laststatus=2
 set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
 "Tab configuration
+set shiftwidth=4
 set expandtab       
 set softtabstop=4
 
@@ -131,4 +137,74 @@ function! ToggleNumber()
         set relativenumber
     endif
 endfunc
+
+
+"------------------------------------
+" Some functions from Damian Conway
+"------------------------------------
+" This rewires n and N to do the highlighing...
+nnoremap <silent> n   n:call HLNext(0.1)<cr>
+nnoremap <silent> N   N:call HLNext(0.1)<cr>
+
+" EITHER blink the line containing the match...
+function! HLNext (blinktime)
+        set invcursorline
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+        set invcursorline
+        redraw
+endfunction
+
+" OR ELSE ring the match in red...
+function! HLNext (blinktime)
+        highlight RedOnRed ctermfg=red ctermbg=red
+        let [bufnum, lnum, col, off] = getpos('.')
+        let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+        echo matchlen
+        let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
+                \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
+                \ . '\|'
+                \ . '\%'.lnum.'l\%>'.max([col+matchlen-1,1]) .'v\%<'.(col+matchlen+3).'v.'
+                \ . '\|'
+                \ . '\%'.(lnum+1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.'
+        let ring = matchadd('RedOnRed', ring_pat, 101)
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+        call matchdelete(ring)
+        redraw
+endfunction
+
+" OR ELSE briefly hide everything except the match...
+function! HLNext (blinktime)
+        highlight BlackOnBlack ctermfg=black ctermbg=black
+        let [bufnum, lnum, col, off] = getpos('.')
+        let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+        let hide_pat = '\%<'.lnum.'l.'
+                \ . '\|'
+                \ . '\%'.lnum.'l\%<'.col.'v.'
+                \ . '\|'
+                \ . '\%'.lnum.'l\%>'.(col+matchlen-1).'v.'
+                \ . '\|'
+                \ . '\%>'.lnum.'l.'
+        let ring = matchadd('BlackOnBlack', hide_pat, 101)
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+        call matchdelete(ring)
+        redraw
+endfunction
+
+" OR ELSE just highlight the match in red...
+function! HLNext (blinktime)
+        highlight WhiteOnRed ctermfg=red ctermbg=white
+        let [bufnum, lnum, col, off] = getpos('.')
+        let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+        let target_pat = '\c\%#'.@/
+        let ring = matchadd('WhiteOnRed', target_pat, 101)
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+        call matchdelete(ring)
+        redraw
+endfunction
+
+
 
