@@ -120,7 +120,9 @@ export PATH=~/.vim/bin:$PATH
 #Alias
 alias minecraft='minecraft.sh'
 alias emacs-t='emacs -nw'
-alias vimrc='/usr/share/vim/vimrc'
 
 PERL_MB_OPT="--install_base \"/home/adc90/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/adc90/perl5"; export PERL_MM_OPT;
+
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
