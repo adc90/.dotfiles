@@ -160,7 +160,6 @@ map <leader>l :set list!<CR>
 map <leader>y :call ShowColumn()<CR>
 map <leader>w :call ShowDigraphs()<CR>
 
-"Move the text
 vmap <expr> <LEFT> DVB_Drag('left')
 vmap <expr> <RIGHT> DVB_Drag('right')
 vmap <expr> <DOWN> DVB_Drag('down')
@@ -319,12 +318,6 @@ function StripTrailingWhitespace()
     normal 'yz<CR>
     normal `z
   endif
-endfunction
-
-function! ShowDigraphs ()
-    digraphs
-    call getchar()
-    return "\<C-K>"
 endfunction
 
 "Called once right before you start selecting multiple cursors
