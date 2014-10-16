@@ -39,6 +39,7 @@ set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
+set number
 set hidden		" Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 
@@ -61,8 +62,8 @@ call vundle#begin()
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Raimondi/delimitMate'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/neosnippet.vim'
+" Plugin 'Shougo/neocomplete.vim'
+" Plugin 'Shougo/neosnippet.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'godlygeek/tabular'
 Plugin 'jaxbot/browserlink.vim'
@@ -92,23 +93,23 @@ Plugin 'whatyouhide/vim-gotham'
 "--------------------------------------------"
 " Plugin configurations
 "--------------------------------------------"
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" let g:acp_enableAtStartup = 1
+" let g:neocomplete#enable_at_startup = 0
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 let g:indentLine_char = '│'
 "--------------------------------------------"
 call vundle#end()
 filetype plugin indent on
 "--------------------------------------------"
 "Enable snipMate compatibility feature.
-let g:neosnippet#enable_snipmate_compatibility = 1
+" let g:neosnippet#enable_snipmate_compatibility = 1
 
 "Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+" let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 "Nerdtree configurations
 let g:NERDTreeWinPos = "right"
@@ -157,8 +158,10 @@ map <leader>p :call StripTrailingWhitespace()<CR>
 map <leader>c :setlocal spell!<CR>
 map <leader>u :GundoToggle<CR>
 map <leader>l :set list!<CR>
+map <leader>h :set syntax<CR>
 map <leader>y :call ShowColumn()<CR>
 map <leader>w :call ShowDigraphs()<CR>
+map <leader>b :call ToggleSyntax()<CR>
 
 vmap <expr> <LEFT> DVB_Drag('left')
 vmap <expr> <RIGHT> DVB_Drag('right')
@@ -331,6 +334,14 @@ endfunction
 function! Multiple_cursors_after()
     if exists(':NeoCompleteUnlock')==2
         exe 'NeoCompleteUnlock'
+    endif
+endfunction
+
+function! ToggleSyntax()
+    if exists("g:syntax_on")
+        syntax off
+    else
+        syntax enable
     endif
 endfunction
 
