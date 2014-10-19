@@ -1,3 +1,19 @@
+
+;; OCaml Stuff
+(load "/home/adc90/Build/tuareg/tuareg-site-file.el")
+
+;; Indent `=' like a standard keyword.
+(setq tuareg-lazy-= t)
+;; Indent [({ like standard keywords.
+(setq tuareg-lazy-paren t)
+;; No indentation after `in' keywords.
+(setq tuareg-in-indent 0)
+
+(add-hook 'tuareg-mode-hook
+          ;; Turn on auto-fill minor mode.
+          (lambda () (auto-fill-mode 1)))
+
+
 (set-background-color "tsdh-dark")
 (menu-bar-mode 0)
 ;;Set the line number settings
