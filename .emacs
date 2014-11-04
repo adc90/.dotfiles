@@ -34,3 +34,5 @@
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
