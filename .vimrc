@@ -5,19 +5,17 @@
 "--------------------------------------------"
 " Set standard Vim settings
 "--------------------------------------------"
-set autowrite
-set cursorline
+set ttymouse=xterm2
+set background=dark
 set hidden
 set hlsearch
 set ignorecase
 set incsearch
+set magic
 set number
-set showcmd
 set showmatch
 set smartcase
-set ttymouse=xterm2
-set wildmenu
-set background=dark
+set mouse=a
 syntax sync minlines=256
 
 "Customize the characters for new line and tab
@@ -33,9 +31,9 @@ if has("syntax")
 endif
 
 "Set backup directories
-set backup
-set backupdir=~/.vim/backup
-set backupdir=~/.vim/tmp
+set nobackup
+set nowb
+set noswapfile
 
 "Auto-commands
 if has("gui_running")
@@ -58,13 +56,16 @@ augroup CLNRSet
     autocmd! ColorScheme * hi CursorLineNR cterm=bold
 augroup END
 
+au InsertLeave *.html :BLReloadPage
+
 "--------------------------------------------"
 
 "--------------------------------------------"
 " Colorscheme stuff
 "--------------------------------------------"
+colorscheme peaksea
+highlight NonText guifg=fg guibg=bg ctermfg=fg ctermbg=bg gui=none cterm=none
 set t_Co=256
-colorscheme wombat256
 "--------------------------------------------"
 " Favorites
 "--------------------------------------------"
@@ -84,93 +85,170 @@ colorscheme wombat256
 "--------------------------------------------"
 " Set Vundle stuff
 "--------------------------------------------"
-set nocompatible
-filetype off
+if !1 | finish | endif
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if has('vim_starting')
+    set nocompatible
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+
+call neobundle#end()
+filetype plugin indent on
+
+NeoBundleCheck
+
 "--------------------------------------------"
 " Plugins
 "--------------------------------------------"
-"Plugin 'airblade/vim-gitgutter'
-"Plugin 'davidhalter/jedi-vim'
-"Plugin 'klen/python-mode'
-"Plugin 'scrooloose/nerdtree'
-"Plugin 'skammer/vim-css-color'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Raimondi/delimitMate'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/neosnippet.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'ap/vim-css-color'
-Plugin 'docunext/closetag.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'majutsushi/tagbar'
-Plugin 'nice/sweater'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/vim-statline'
-Plugin 'sjl/gundo.vim'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-capslock'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'triglav/vim-visual-increment'
-Plugin 'vim-coffee-script'
-Plugin 'vim-scripts/Colour-Sampler-Pack'
-Plugin 'vim-scripts/CycleColor'
-Plugin 'vim-scripts/cascadia.vim'
-Plugin 'whatyouhide/vim-gotham'
+" Bundle 'jaxbot/browserlink.vim'
+" Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'MattesGroeger/vim-bookmarks'
+" Bundle 'Raimondi/delimitMate'
+" Bundle 'Shougo/neocomplete.vim'
+" Bundle 'Shougo/neosnippet.vim'
+" Bundle 'Shougo/unite.vim'
+" Bundle 'ZoomWin'
+" Bundle 'altercation/vim-colors-solarized'
+" Bundle 'ap/vim-css-color'
+" Bundle 'bling/vim-airline'
+" Bundle 'bling/vim-bufferline'
+" Bundle 'davidhalter/jedi-vim'
+" Bundle 'docunext/closetag.vim'
+" Bundle 'elzr/vim-json'
+" Bundle 'ervandew/supertab'
+" Bundle 'godlygeek/csapprox'
+" Bundle 'godlygeek/tabular'
+" Bundle 'hail2u/vim-css3-syntax'
+" Bundle 'haya14busa/incsearch.vim'
+" Bundle 'jlanzarotta/bufexplorer'
+" Bundle 'junegunn/limelight.vim'
+" Bundle 'majutsushi/tagbar'
+" Bundle 'mattn/emmet-vim'
+" Bundle 'mileszs/ack.vim'
+" Bundle 'nice/sweater'
+" Bundle 'osyo-manga/vim-over'
+" Bundle 'othree/html5.vim'
+" Bundle 'rdlugosz/vim-dragvisuals'
+" Bundle 'rhysd/clever-f.vim'
+" Bundle 'scrooloose/nerdtree'
+" Bundle 'scrooloose/syntastic'
+" Bundle 'sjl/gundo.vim'
+" Bundle 'tommcdo/vim-exchange'
+" Bundle 'tomtom/tcomment_vim'
+" Bundle 'tpope/vim-abolish'
+" Bundle 'tpope/vim-capslock'
+" Bundle 'tpope/vim-endwise'
+" Bundle 'tpope/vim-eunuch'
+" Bundle 'tpope/vim-fugitive'
+" Bundle 'tpope/vim-git'
+" Bundle 'tpope/vim-haml'
+" Bundle 'tpope/vim-markdown'
+" Bundle 'tpope/vim-repeat'
+" Bundle 'tpope/vim-surround'
+" Bundle 'tpope/vim-speeddating'
+" Bundle 'triglav/vim-visual-increment'
+" Bundle 'vim-coffee-script'
+" Bundle 'vim-scripts/Colour-Sampler-Pack'
+" Bundle 'vim-scripts/CycleColor'
+" Bundle 'vim-scripts/YankRing.vim'
+" Bundle 'vim-scripts/cascadia.vim'
+" Bundle 'vimwiki/vimwiki'
+" Bundle 'whatyouhide/vim-gotham'
+" Bundle 'kopischke/unite-spell-suggest'
+" Bundle 'kristijanhusak/vim-multiple-cursors'
+"--------------------------------------------"
+
 "--------------------------------------------"
 " Plugin configurations
 "--------------------------------------------"
-
-"Incremental increase of alpha characters
-set nrformats=alpha
-
-"OCaml Merlin configurations
-set rtp+=/usr/local/share/ocamlmerlin/vim
-
-"CSS color preview
-let g:cssColorVimDoNotMessMyUpdatetime = 1
-
-"Neocomplete configuration
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-" Enable snipMate compatibility feature.
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+"Vim-airline configuration
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
+" let g:airline_symbols.space = "\ua0"
+" let g:airline_powerline_fonts = 1
+" " let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#syntastic#enabled =1
+" set laststatus=2
+" let g:airline_theme = "badwolf"
+" 
+" "Bookmarks
+" "let g:bookmark_save_per_working_dir = 1
+" 
+" "Nerd Tree toggle
+" let g:NERDTreeWinPos = "right"
+" let g:tagbar_left = 1
+" 
+" "Incremental increase of alpha characters
+" set nrformats=alpha
+" 
+" "OCaml Merlin configurations
+" set rtp+=/usr/local/share/ocamlmerlin/vim
+" 
+" "CSS color preview
+" let g:cssColorVimDoNotMessMyUpdatetime = 1
+" 
+" "Neocomplete configuration
+" let g:acp_enableAtStartup = 0
+" " Use neocomplete.
+" let g:neocomplete#enable_at_startup = 1
+" " Use smartcase.
+" let g:neocomplete#enable_smart_case = 1
+" " Set minimum syntax keyword length.
+" let g:neocomplete#sources#syntax#min_keyword_length = 3
+" let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" 
+" " Plugin key-mappings.
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
+" 
+" " SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: "\<TAB>"
+" " Enable snipMate compatibility feature.
+" let g:neosnippet#enable_snipmate_compatibility = 1
+" 
+" " Tell Neosnippet about the other snippets
+" let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+" let g:unite_source_history_yank_enable = 1
+" 
+" " Called once right before you start selecting multiple cursors
+" function! Multiple_cursors_before()
+"     if exists(':NeoCompleteLock')==2
+"         exe 'NeoCompleteLock'
+"     endif
+" endfunction
+" 
+" " Called once only when the multiple selection is canceled (default <Esc>)
+" function! Multiple_cursors_after()
+"     if exists(':NeoCompleteUnlock')==2
+"         exe 'NeoCompleteUnlock'
+"     endif
+" endfunction
+" 
+" " Move visual block
+" vnoremap J :m '>+1<CR>gv=gv
+" vnoremap K :m '<-2<CR>gv=gv
+" 
+" "Syntastic
+" let g:syntastic_error_symbol = '✗'
+" let g:syntastic_warning_symbol = '⚠'
+" let g:syntastic_full_redraws = 1
+" let g:syntastic_auto_jump = 2
+" let g:syntastic_auto_loc_list = 1
 
 "--------------------------------------------"
-call vundle#end()
-filetype plugin indent on
+" call vundle#end()
+" filetype plugin indent on
 "--------------------------------------------"
 
 "--------------------------------------------"
@@ -180,15 +258,23 @@ filetype plugin indent on
 let mapleader=" "
 
 "Set leader bar short cuts
-map <leader>b :call ToggleSyntax()            <CR>
-map <leader>c :setlocal spell!                <CR>
-map <leader>l :set list!                      <CR>
-map <leader>o :Unite file buffer              <CR>
-map <leader>p :call StripTrailingWhitespace() <CR>
-map <leader>r :call ToggleNumber()            <CR>
-map <leader>t :TagbarToggle                   <CR>
-map <leader>u :GundoToggle                    <CR>
-map <leader>y :call ShowColumn()              <CR>
+" map  <leader>b  :call ToggleSyntax()            <CR>
+" map  <leader>cs :JumpToCSS                      <CR>
+" map  <leader>g  :YRShow                         <CR>
+" map  <leader>c  :setlocal spell!                <CR>
+" map  <leader>d  :call ToggleLimeLight()         <CR>
+" map  <leader>f  :Unite grep:.                   <CR>
+" map  <leader>g  :Unite history/yank             <CR>
+" map  <leader>j  i<CR><Esc>
+" map  <leader>k  :Unite -quick-match buffer      <CR>
+" map  <leader>l  :set list!                      <CR>
+" map  <leader>o  :NERDTreeToggle                 <CR>
+" map  <leader>p  :call StripTrailingWhitespace() <CR>
+" map  <leader>r  :call ToggleNumber()            <CR>
+" map  <leader>s  :Unite file_rec/async           <CR>
+" map  <leader>t  :TagbarToggle                   <CR>
+" map  <leader>u  :GundoToggle                    <CR>
+" map  <leader>y  :call ShowColumn()              <CR>
 "--------------------------------------------"
 
 "--------------------------------------------"
@@ -204,6 +290,10 @@ vnoremap L g_
 "Map C-a to bol for insert mode
 inoremap <C-e> <C-o>$
 inoremap <C-a> <C-o>0
+
+" map /  <Plug>(incsearch-forward)
+" map ?  <Plug>(incsearch-backward)
+" map g/ <Plug>(incsearch-stay)
 "----------------------------------"
 
 "----------------------------------"
@@ -219,11 +309,16 @@ noremap <C-L> :vertical resize +5<CR>
 noremap <C-H> :vertical resize -5<CR>
 "----------------------------------"
 
+vmap <expr> <LEFT><LEFT> DVB_Drag('left') 
+vmap <expr> <RIGHT><RIGHT> DVB_Drag('right')
+vmap <expr> <DOWN><DOWN> DVB_Drag('down') 
+vmap <expr> <UP><UP> DVB_Drag('up')
+
 "----------------------------------"
 " Some functions I've picked up and
 " wrote myself
 "----------------------------------"
-" Toggle relative numbers: http://dougblack.io/words/a-good-vimrc.html#colors
+"Toggle relative numbers: http://dougblack.io/words/a-good-vimrc.html#colors
 function! ToggleNumber()
     if(&relativenumber == 1)
         set norelativenumber
@@ -233,7 +328,7 @@ function! ToggleNumber()
     endif
 endfunc
 
-function ShowColumn()
+function! ShowColumn()
     if(&colorcolumn != 0)
         set colorcolumn=0
     else
@@ -242,7 +337,7 @@ function ShowColumn()
     endif
 endfunction
 
-function StripTrailingWhitespace()
+function! StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
     normal mz
     normal Hmy
@@ -259,5 +354,18 @@ function! ToggleSyntax()
         syntax enable
     endif
 endfunction
+
+" let g:airline_theme_patch_func = 'AirlineThemePatch'
+" function! AirlineThemePatch(palette)
+"     if g:airline_theme == 'badwolf'
+"         for colors in values(a:palette.inactive)
+"             let colors[3] = 245
+"         endfor
+"     endif
+" endfunction
+
+" function! ToggleLimeLight()
+"     Limelight!!
+" endfunction
 "----------------------------------"
 
