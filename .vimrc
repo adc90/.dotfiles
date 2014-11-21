@@ -15,6 +15,7 @@ set number
 set showmatch
 set smartcase
 set mouse=a
+set backspace=indent,eol,start
 syntax sync minlines=256
 
 "Customize the characters for new line and tab
@@ -53,6 +54,9 @@ hi CursorLineNR cterm=bold
 augroup CLNRSet
     autocmd! ColorScheme * hi CursorLineNR cterm=bold
 augroup END
+
+au InsertLeave *.css :BLReloadCSS
+au InsertLeave *.html :echo "hi"
 "-------------------------------------"
 
 
@@ -68,6 +72,10 @@ endif
 
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
+
+"--------------------------------------------"
+" Plugins
+"--------------------------------------------"
 NeoBundle 'Shougo/vimproc.vim', {
             \ 'build' : {
             \ 'windows' : 'tools\\update-dll-mingw',
@@ -131,6 +139,8 @@ NeoBundle 'vim-scripts/cascadia.vim'
 NeoBundle 'vimwiki/vimwiki'
 NeoBundle 'kopischke/unite-spell-suggest'
 NeoBundle 'kristijanhusak/vim-multiple-cursors'
+NeoBundle 'Yggdroot/indentLine'
+"--------------------------------------------"
 
 call neobundle#end()
 filetype plugin indent on
@@ -158,8 +168,8 @@ let g:airline_theme = "badwolf"
 "let g:bookmark_save_per_working_dir = 1
 
 "Nerd Tree toggle
-let g:NERDTreeWinPos = "right"
-let g:tagbar_left = 1
+let g:NERDTreeWinPos = "left"
+let g:tagbar_left = 0
 
 "Incremental increase of alpha characters
 set nrformats=alpha
@@ -214,6 +224,9 @@ function! Multiple_cursors_after()
     endif
 endfunction
 
+"Indent line
+let g:indentLine_char = '︙'
+
 "Syntastic
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
@@ -221,9 +234,7 @@ let g:syntastic_full_redraws = 1
 let g:syntastic_auto_jump = 2
 let g:syntastic_auto_loc_list = 1
 "--------------------------------------------"
-" call vundle#end()
-" filetype plugin indent on
-"--------------------------------------------"
+
 "--------------------------------------------"
 " Map leader
 "--------------------------------------------"
@@ -246,6 +257,7 @@ map <leader>s :w                              <CR>
 map <leader>t :TagbarToggle                   <CR>
 map <leader>u :GundoToggle                    <CR>
 map <leader>y :call ShowColumn()              <CR>
+map <leader>a :call ToggleLimeLight()         <CR>
 "--------------------------------------------"
 
 "--------------------------------------------"
@@ -282,6 +294,7 @@ noremap <C-H> :vertical resize -5<CR>
 " Some functions I've picked up and
 " wrote myself
 "----------------------------------"
+
 "Toggle relative numbers: http://dougblack.io/words/a-good-vimrc.html#colors
 function! ToggleNumber()
     if(&relativenumber == 1)
@@ -319,23 +332,15 @@ function! ToggleSyntax()
     endif
 endfunction
 
-" let g:airline_theme_patch_func = 'AirlineThemePatch'
-" function! AirlineThemePatch(palette)
-" if g:airline_theme == 'badwolf'
-" for colors in values(a:palette.inactive)
-" let colors[3] = 245
-" endfor
-" endif
-" endfunction
-" function! ToggleLimeLight()
-" Limelight!!
-" endfunction
-"----------------------------------"
+function! ToggleLimeLight()
+    Limelight!!
+endfunction
+"-------------------------------------"
 
 "-------------------------------------"
 " Colorscheme stuff
 "-------------------------------------"
-color darkburn
+color Mustang
 highlight NonText guifg=fg guibg=bg ctermfg=fg ctermbg=bg gui=none cterm=none
 set t_Co=256
 "-------------------------------------"
